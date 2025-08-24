@@ -1,0 +1,53 @@
+name: buffet_invoice_system
+description: Buffet Invoice System
+
+publish_to: 'none' # /// prevent publishing to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8       # /// iOS icons
+  provider: ^6.1.5              # /// state management
+  intl: 0.19.0                  # /// localization and date formatting
+  printing: ^5.11.0             # /// print PDFs
+  pdf: ^3.10.4                  # /// create PDFs
+  hive: ^2.2.3                  # /// lightweight database
+  hive_flutter: ^1.1.0          # /// Hive integration with Flutter
+  path_provider: ^2.0.14        # /// access file system
+  fl_chart: ^0.68.0             # /// charts and graphs
+  responsive_framework: ^1.5.1  # /// responsive layouts
+  device_preview: ^1.1.0        # /// preview on different devices
+  shared_preferences: ^2.1.1    # /// local simple storage
+
+# /// dev packages
+dev_dependencies:
+  flutter_test:
+    sdk: flutter                # /// Flutter test framework
+  flutter_lints: ^4.0.0         # /// static code analysis
+  build_runner: ^2.4.6          # /// code generation
+  hive_generator: ^2.0.1        # /// generate Hive TypeAdapters
+
+# /// Flutter settings
+flutter:
+  uses-material-design: true     # /// use Material icons and widgets
+  generate: true                 # /// auto-generated files
+
+  # /// fonts
+  fonts:
+    - family: NotoSansArabic
+      fonts:
+        - asset: assets/fonts/NotoSansArabic-Regular.ttf
+        - asset: assets/fonts/NotoSansArabic-Bold.ttf
+          weight: 700
+
+  # /// assets
+  assets:
+    - assets/images/

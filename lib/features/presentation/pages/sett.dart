@@ -1,0 +1,362 @@
+import 'package:flutter/material.dart';
+
+/// صفحة الإعدادات الرئيسية — متوافقة مع RTL (العربية)
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  int _selectedIndex = 0;
+
+  void _onBottomNavTap(int idx) {
+    setState(() {
+      _selectedIndex = idx;
+    });
+    // هنا تضيف التنقل الحقيقي لو أردت
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality( // اجبار RTL
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF2F4F7),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: const Text(
+            'الإعدادات',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  children: [
+                    _buildSectionCard(
+                      child: Column(
+                        children: [
+                          SettingsItem(
+                            icon: Icons.sync,
+                            label: 'تحديث بيانات التطبيق',
+                            onTap: () {},
+                          ),
+                          SettingsItem(
+                            icon: Icons.devices,
+                            label: 'إدارة الأجهزة',
+                            onTap: () {},
+                          ),
+                          SettingsItem(
+                            icon: Icons.message,
+                            label: 'إدارة الاقتراحات',
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildSectionCard(
+                      child: Column(
+                        children: [
+                          SettingsItem(
+                            icon: Icons.shield,
+                            label: 'الخصوصية والأمان',
+                            onTap: () {},
+                          ),
+                          SettingsItem(
+                            icon: Icons.language,
+                            label: 'لغة التطبيق',
+                            trailingText: 'العربية',
+                            onTap: () {},
+                          ),
+                          SettingsItem(
+                            icon: Icons.cancel,
+                            label: 'طلب الغاء المحفظة',
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    _buildSectionCard(
+                      child: Column(
+                        children: [
+                          SettingsItem(
+                            icon: Icons.logout,
+                            label: 'تسجيل الخروج',
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => CustomLogoutDialog(
+                                  ctx,
+                                  onLogout: () {
+                                    Navigator.of(ctx).pop();
+                                    // ضع هنا عملية تسجيل الخروج الحقيقية
+                                    // مثال: auth.signOut();
+                                  },
+                                  onCancel: () {
+                                    Navigator.of(ctx).pop();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          'V 0.3.4.7',
+                          style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          elevation: 4,
+          child: const Icon(Icons.home),
+          backgroundColor: Colors.black,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8,
+          elevation: 8,
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => _onBottomNavTap(0),
+                  icon: Icon(
+                    Icons.person,
+                    color: _selectedIndex == 0 ? Colors.red : Colors.grey[700],
+                  ),
+                ),
+                const SizedBox(width: 6),
+                IconButton(
+                  onPressed: () => _onBottomNavTap(1),
+                  icon: Icon(
+                    Icons.list,
+                    color: _selectedIndex == 1 ? Colors.red : Colors.grey[700],
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () => _onBottomNavTap(2),
+                  icon: Icon(
+                    Icons.shopping_bag,
+                    color: _selectedIndex == 2 ? Colors.red : Colors.grey[700],
+                  ),
+                ),
+                const SizedBox(width: 6),
+                IconButton(
+                  onPressed: () => _onBottomNavTap(3),
+                  icon: Icon(
+                    Icons.home_outlined,
+                    color: _selectedIndex == 3 ? Colors.red : Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// بطاقة (Card) بيضاء مستديرة تحتوي عدة عناصر
+  Widget _buildSectionCard({required Widget child}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+}
+
+/// عنصر إعداد واحد — أيقونة على اليمين (RTL) واسم وخانة للطرف الأيمن
+class SettingsItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+  final String? trailingText;
+
+  const SettingsItem({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.onTap,
+    this.trailingText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        child: Row(
+          children: [
+            // أيقونة على اليمين (بسبب RTL ستظهر أولاً)
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, size: 22, color: Colors.black87),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+            ),
+            if (trailingText != null) ...[
+              Text(
+                trailingText!,
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
+              ),
+              const SizedBox(width: 8),
+            ],
+            const Icon(Icons.chevron_left, color: Colors.grey),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomLogoutDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback onLogout;
+  final VoidCallback onCancel;
+
+  const CustomLogoutDialog(
+      BuildContext context, {
+        super.key,
+        this.title = "تأكيد!",
+        this.message = "هل تريد الخروج من التطبيق؟",
+        required this.onLogout,
+        required this.onCancel,
+      });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onCancel,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[100],
+                      foregroundColor: Colors.grey[800],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text("إلغاء"),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onLogout,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text(
+                      "حسناً",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
